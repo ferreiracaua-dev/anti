@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anti — enrole o golpista</title>
+<meta name="theme-color" content="#0F172A">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+  <h1>🛡️ Anti</h1>
+  <div class="stats" id="stats"></div>
+</header>
+<nav id="tabs">
+  <button data-tab="enrolar" class="active">Enrolar</button>
+  <button data-tab="dados">Dados falsos</button>
+  <button data-tab="link">Verificar link</button>
+  <button data-tab="arquivo">Verificar arquivo</button>
+  <button data-tab="diario">Diário</button>
+  <button data-tab="caí">Caí no golpe</button>
+</nav>
+<main>
+
+<section id="tab-enrolar" class="tab active">
+  <div class="grid2">
+    <div class="card">
+      <h2>Persona</h2>
+      <label>Personagem
+        <select id="persona"></select>
+      </label>
+      <p class="muted" id="personaDesc"></p>
+      <label>Nível de leigo
+        <select id="nivel">
+          <option value="auto" selected>Recomendado (automático)</option>
+          <option value="1">1 — Pouco leigo</option>
+          <option value="2">2 — Médio</option>
+          <option value="3">3 — Muito leigo</option>
+          <option value="4">4 — Extremo</option>
+        </select>
+      </label>
+      <label>Estilo de escrita
+        <select id="estilo">
+          <option value="normal">Normal</option>
+          <option value="erros" selected>Com erros de digitação</option>
+          <option value="semponto">Sem pontuação</option>
+          <option value="caps">CAIXA ALTA</option>
+        </select>
+      </label>
+      <label>Tipo de golpe
+        <select id="tipo"></select>
+      </label>
+    </div>
+    <div class="card">
+      <h2>Mensagem do golpista</h2>
+      <textarea id="msgGolpista" rows="6" placeholder="Cole aqui o que o golpista mandou…"></textarea>
+      <div class="row">
+        <button id="btnResp" class="primary">Sugerir resposta</button>
+        <button id="btnTimer" class="ghost">▶ Iniciar cronômetro</button>
+        <span id="timerView" class="muted">00:00:00</span>
+      </div>
+      <div id="detect" class="muted"></div>
+      <h2>Resposta sugerida</h2>
+      <div id="resp" class="resp">—</div>
+      <div class="row">
+        <button id="btnCopy">Copiar</button>
+        <button id="btnOutra">Outra opção</button>
+        <button id="btnSalvar" class="ghost">Salvar no diário</button>
+      </div>
+      <p class="muted" id="respInfo"></p>
+    </div>
+  </div>
+  <div class="card tips">
+    <h2>Dicas de segurança</h2>
+    <ul>
+      <li>Nunca clique nos links nem abra arquivos que o golpista mandar — use a aba de verificação.</li>
+      <li>Não dê dado seu de verdade. Use só os dados fictícios da aba “Dados falsos”.</li>
+      <li>Demore para responder, como uma pessoa real. Resposta instantânea parece robô.</li>
+      <li>Se ele ameaçar ou souber algo real sobre você, pare, bloqueie e denuncie.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="tab-dados" class="tab">
+  <div class="card">
+    <h2>Gerador de identidade falsa</h2>
+    <div class="row">
+      <label>País
+        <select id="pais"></select>
+      </label>
+      <button id="btnGerar" class="primary">Gerar nova identidade</button>
+    </div>
+    <div id="identidade" class="kv"></div>
+    <p class="muted">Tudo é fictício: nomes de listas genéricas, endereço sorteado (pode coincidir por acaso com um lugar real, então não junte com dados de pessoas reais), CPF com dígitos verificadores <b>inválidos</b> e cartão que <b>falha</b> na verificação.</p>
+  </div>
+  <div class="card">
+    <h2>E-mail temporário</h2>
+    <div class="row">
+      <button id="btnMail" class="primary">Criar e-mail temporário (mail.tm)</button>
+      <button id="btnInbox">Atualizar caixa de entrada</button>
+    </div>
+    <div id="mailInfo" class="muted"></div>
+    <div id="inbox"></div>
+    <h3>Alias do seu próprio Gmail</h3>
+    <div class="row">
+      <input id="gmailBase" placeholder="seunome@gmail.com">
+      <button id="btnAlias">Gerar alias</button>
+    </div>
+    <div id="aliasOut" class="muted"></div>
+    <p class="muted">Gmail novo de verdade não dá para criar por app. O alias (<code>seunome+golpista1@gmail.com</code>) cai na sua caixa e mostra de onde o spam vazou. Endereços só com cara de e-mail usam domínios reservados (<code>example.com</code>) para não atingir ninguém.</p>
+  </div>
+</section>
+
+<section id="tab-link" class="tab">
+  <div class="card">
+    <h2>Verificador de link</h2>
+    <p class="muted">O app <b>nunca abre</b> o link. Ele analisa só o endereço e mostra um nível de risco com os motivos. Nenhum verificador pega 100% dos casos.</p>
+    <div class="row">
+      <input id="linkIn" placeholder="Cole o link suspeito (https://…)" style="flex:1">
+      <button id="btnLink" class="primary">Analisar</button>
+    </div>
+    <div id="linkOut"></div>
+  </div>
+</section>
+
+<section id="tab-arquivo" class="tab">
+  <div class="card">
+    <h2>Verificador de arquivo</h2>
+    <p class="muted">O arquivo é lido <b>só no seu aparelho</b> (nada é enviado). O app calcula o hash e confere tipo real, extensão e sinais de risco.</p>
+    <input type="file" id="fileIn">
+    <div id="fileOut"></div>
+  </div>
+</section>
+
+<section id="tab-diario" class="tab">
+  <div class="card">
+    <h2>Diário do golpe</h2>
+    <div class="row">
+      <button id="btnExport" class="primary">Exportar relatório (.txt)</button>
+      <button id="btnLimpar" class="danger">Apagar tudo</button>
+    </div>
+    <div id="diario"></div>
+  </div>
+  <div class="card">
+    <h2>Placar</h2>
+    <div id="placar"></div>
+  </div>
+</section>
+
+<section id="tab-caí" class="tab">
+  <div class="card">
+    <h2>Caí no golpe, e agora?</h2>
+    <ol class="steps">
+      <li><b>Fale com o seu banco agora</b>, pelo app ou pelo telefone que está no cartão/site oficial. Peça bloqueio de cartões e contas afetadas.</li>
+      <li><b>Pix:</b> peça ao banco o <b>MED</b> (Mecanismo Especial de Devolução). O prazo para pedir é de até 80 dias, mas quanto antes, melhor.</li>
+      <li><b>Troque as senhas</b> das contas que o golpista pode ter visto (e-mail primeiro, depois banco e redes sociais) e ative a verificação em duas etapas.</li>
+      <li><b>Registre um boletim de ocorrência</b>, de preferência online na delegacia virtual do seu estado ou na delegacia de crimes cibernéticos.</li>
+      <li><b>Guarde as provas:</b> prints, números, links, comprovantes. O Diário do app exporta isso organizado.</li>
+      <li><b>Se instalou algum app ou arquivo</b>, desligue a internet do aparelho, desinstale e rode um antivírus; em último caso, restaure de fábrica.</li>
+      <li><b>Avise quem pode ser alvo</b> (família, contatos), principalmente se o golpista usou seu nome.</li>
+      <li>Reclame na plataforma onde o golpe aconteceu (WhatsApp, Instagram, marketplace) e, se for o caso, no consumidor.gov.br.</li>
+    </ol>
+  </div>
+  <div class="card">
+    <h2>Golpes comuns</h2>
+    <div id="golpes"></div>
+  </div>
+</section>
+
+</main>
+<footer>Anti — para enrolar golpista, nunca para enganar gente de verdade. Não imite bancos, não gere comprovantes e não tente descobrir onde o golpista mora: denuncie.</footer>
+<script src="js/data.js"></script>
+<script src="js/gen.js"></script>
+<script src="js/persona.js"></script>
+<script src="js/link.js"></script>
+<script src="js/file.js"></script>
+<script src="js/diary.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
